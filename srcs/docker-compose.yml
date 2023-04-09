@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+
+  nginx:
+    build:
+      context: .
+      dockerfile: requirements/nginx/Dockerfile  # Build the nginx service using the specified Dockerfile
+    container_name: nginx                        # Set the name of the container to "nginx"
+    ports:
+      - "9000:9000"                                # Publish port 443 from the container to port 443 on the host
+    networks:
+      - inception                                # Connect the nginx service to the "inception" network
+    restart: always                              # Restart the container automatically if it exits
+    volumes:
+      - ./requirements/nginx/conf/:/etc/nginx/http.d/
+      - ./requirements/nginx/tools:/tools
+    depends_on:
+      - wordpress
+
+  wordpress:
+    build:
+      context: .
+      dockerfile: requirements/wordpress/Dockerfile
+    container_name: wordpress
+    ports:
+      - "443:443"
+    networks:
+      - inception
+    restart: always
+
+networks:
+    inception:
+        driver: bridge                            # Define a bridge network called "inception"
