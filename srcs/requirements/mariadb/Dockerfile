@@ -1,25 +1,20 @@
-FROM alpine:3.17
+FROM	alpine:3.15
+ARG		DB_NAME \
+    	DB_USER \
+    	DB_PASS
+RUN 	apk update && \
+		apk add --no-cache mariadb mariadb-client; \
+RUN		mkdir /var/run/mysqld; \
+    	chmod 777 /var/run/mysqld;
+COPY	./conf/mariadb-server.cnf /etc/my.cnf.d/mariadb-server.cnf
 
-ARG MYSQL_NAME \
-    MYSQL_USER \
-    MYSQL_PASSSWORD
+RUN		mysql_install_db --user=mysql --datadir=/var/lib/mysql
 
-RUN apk update && \
-	apk add --no-cache mariadb mariadb-client && \
-	mkdir -p /var/lib/mysql && \
-	mkdir -p /var/lib/wordpress && \
-	chown -R mysql:mysql /var/lib/mysql
 
-COPY tools/setup_mysql.sh /setup_mysql.sh
-RUN chmod +x /setup_mysql.sh && \
-	/setup_mysql.sh
+EXPOSE	3306
 
-EXPOSE 3306
-
-COPY tools/create_database.sh .
-RUN chmod +x /create_database.sh && \
-	/create_database.sh
+COPY	tools/create_database.sh .
+RUN		chmod +x /create_database.sh && /create_database.sh
 
 USER mysql
-
-CMD ["/usr/bin/mysqld", "--skip-log-error"]
+CMD ["mysqld", "--skip-log-error"]

@@ -1,30 +1,24 @@
-# Use an official Alpine Linux runtime as a parent image
 FROM	alpine:3.15
-
-# Set the working directory to /var/www/html
-WORKDIR	/var/www/html
-
-# Install PHP and required extensions for WordPress
+ARG 	DB_NAME \
+   		DB_USER \
+    	DB_PASS
+WORKDIR	/var/www
 RUN		apk update && \
 		apk upgrade && \
 		apk add --no-cache php7 php7-fpm php7-mysqli php7-pdo_mysql php7-gd php7-xml php7-curl php7-opcache php7-zip curl
-
-# Download and extract WordPress
 RUN		curl -O https://wordpress.org/latest.tar.gz && \
     	tar -zxvf latest.tar.gz && \
     	rm latest.tar.gz
-
-# Set the ownership and permissions of the WordPress files
-RUN		chown -R 0777 /var/www/html/wordpress && \
-    	chmod -R 0777 /var/www/html/wordpress
-
-# Set the PHP timezone
-RUN echo "date.timezone = UTC" > /etc/php7/conf.d/timezone.ini
-
-EXPOSE 443
-
-# Set the entrypoint to start php-fpm
-CMD ["php-fpm7", "-F"]
+RUN		chown -R 0777 /var/www/wordpress && \
+    	chmod -R 0777 /var/www/wordpress && \
+		chmod -R 0777 wp-content/
+EXPOSE	9000
+COPY	./tools/www.conf.sh /usr/local/bin/
+RUN		chmod +x tools/www.conf.sh && \
+    	/tools/www.conf.sh && \
+    	rm /tools/www.conf.sh
+COPY	./conf/wp-config.php /var/www/wp-config.php
+CMD		["php-fpm7", "-F"]
 
 # php7: the main PHP package
 # php7-fpm: the PHP FastCGI Process Manager, which is used to handle PHP requests
