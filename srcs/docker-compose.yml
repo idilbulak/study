@@ -25,9 +25,10 @@ services:
     build:
       context: .
       dockerfile: requirements/wordpress/Dockerfile
-      DB_NAME: ${DB_NAME}
-      DB_USER: ${DB_USER}
-      DB_PASS: ${DB_PASS}
+      args:
+        DB_NAME: ${DB_NAME}
+        DB_USER: ${DB_USER}
+        DB_PASS: ${DB_PASS}
     ports:
       - "9000:9000"
     networks:
