@@ -10,8 +10,7 @@ RUN		curl -O https://wordpress.org/latest.tar.gz && \
     	tar -zxvf latest.tar.gz && \
     	rm latest.tar.gz
 RUN		chown -R 0777 /var/www/wordpress && \
-    	chmod -R 0777 /var/www/wordpress && \
-		chmod -R 0777 wp-content/
+    	chmod -R 0777 /var/www/wordpress
 EXPOSE	9000
 COPY	./tools/www.conf.sh /usr/local/bin/
 RUN		chmod +x tools/www.conf.sh && \
