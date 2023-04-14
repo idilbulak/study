@@ -6,7 +6,7 @@ services:
     container_name: nginx
     image: nginx                     
     build:
-      context: .
+      context: requirements/nginx/
       dockerfile: requirements/nginx/Dockerfile
     ports:
       - "443:443"
@@ -23,7 +23,7 @@ services:
     container_name: wordpress
     image: wordpress
     build:
-      context: .
+      context: requirements/wordpress/
       dockerfile: requirements/wordpress/Dockerfile
       args:
         DB_NAME: ${DB_NAME}
@@ -43,7 +43,7 @@ services:
     container_name: mariadb
     image: mariadb
     build:
-      context: .
+      context: requirements/mariadb/
       dockerfile: requirements/mariadb/Dockerfile
       args:
         DB_NAME: ${DB_NAME}
