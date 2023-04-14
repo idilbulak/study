@@ -12,10 +12,10 @@ RUN		curl -O https://wordpress.org/latest.tar.gz && \
 RUN		chown -R 0777 /var/www/wordpress && \
     	chmod -R 0777 /var/www/wordpress
 EXPOSE	9000
-COPY	tools/www.conf.sh .
-RUN		chmod +x /www.conf.sh && \
-    	/www.conf.sh && \
-    	rm /www.conf.sh
+COPY	tools/conf-setup.sh .
+RUN		chmod +x /conf-setup.sh && \
+    	/conf-setup.sh && \
+    	rm /conf-setup.sh
 COPY	conf/wp-config.php /var/www/wp-config.php
 CMD		["php-fpm7", "-F"]
 
