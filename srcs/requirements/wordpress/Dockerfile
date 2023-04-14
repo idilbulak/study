@@ -2,20 +2,20 @@ FROM	alpine:3.15
 ARG 	DB_NAME \
    		DB_USER \
     	DB_PASS
-WORKDIR	/var/www
 RUN		apk update && \
 		apk upgrade && \
 		apk add --no-cache php7 php7-fpm php7-mysqli php7-pdo_mysql php7-gd php7-xml php7-curl php7-opcache php7-zip curl
-RUN		curl -O https://wordpress.org/latest.tar.gz && \
-    	tar -zxvf latest.tar.gz && \
-    	rm latest.tar.gz
-RUN		chown -R 0777 /var/www/wordpress && \
-    	chmod -R 0777 /var/www/wordpress
-EXPOSE	9000
 COPY	tools/conf-setup.sh .
 RUN		chmod +x /conf-setup.sh && \
     	/conf-setup.sh && \
     	rm /conf-setup.sh
+RUN		curl -O https://wordpress.org/latest.tar.gz && \
+    	tar -zxvf latest.tar.gz && \
+    	rm latest.tar.gz
+WORKDIR	/var/www
+RUN		chown -R 0777 /var/www/wordpress && \
+    	chmod -R 0777 /var/www/wordpress
+EXPOSE	9000
 COPY	conf/wp-config.php /var/www/wp-config.php
 CMD		["php-fpm7", "-F"]
 
