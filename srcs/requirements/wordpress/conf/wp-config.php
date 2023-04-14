@@ -1,7 +1,7 @@
 <?php
 define( 'DB_NAME', '${DB_NAME}' );
 define( 'DB_USER', '${DB_USER}' );
-define( 'DB_PASSWORD', '${DB_PASS}' );
+define( 'DB_PASSWORD', '${DB_PASSWORD}' );
 define( 'DB_HOST', 'mariadb' );
 $table_prefix = 'wp_';
 define( 'WP_DEBUG', false );
