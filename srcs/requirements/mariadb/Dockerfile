@@ -8,7 +8,7 @@ RUN		mkdir /var/run/mysqld; \
     	chmod 777 /var/run/mysqld;
 
 RUN		mysql_install_db --user=mysql --datadir=/var/lib/mysql
-COPY	srcs/requirements/mariadb/conf/mariadb-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+COPY	conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 
 
 EXPOSE	3306
