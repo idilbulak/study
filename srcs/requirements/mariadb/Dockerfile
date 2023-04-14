@@ -7,7 +7,7 @@ RUN 	apk update && \
 RUN		mkdir /var/run/mysqld; \
     	chmod 777 /var/run/mysqld;
 
-COPY	srcs/requirements/mariadb/conf/mariadb-server.cnf /etc/my.cnf.d/mariadb-server.cnf
+COPY	conf/mariadb-server.cnf /etc/my.cnf.d/mariadb-server.cnf
 RUN		mysql_install_db --user=mysql --datadir=/var/lib/mysql
 
 
