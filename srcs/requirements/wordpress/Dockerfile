@@ -6,11 +6,11 @@ WORKDIR	/var/www
 RUN		apk update && \
 		apk upgrade && \
 		apk add --no-cache php8.2 php8.2-fpm php8.2-mysqli php8.2-pdo_mysql php8.2-gd php8.2-xml php8.2-curl php8.2-opcache php8.2-zip curl
-COPY	tools/conf-setup.sh .
+COPY	./tools/conf-setup.sh .
 RUN		chmod +x /conf-setup.sh && /conf-setup.sh && rm /conf-setup.sh
 RUN		curl -O https://wordpress.org/latest.tar.gz && \
     	tar -zxvf latest.tar.gz && cp -rf wordpress . && rm latest.tar.gz
-COPY	conf/wp-config.php /var/www/wordpress/
+COPY	./conf/wp-config.php /var/www/wordpress/
 RUN		chmod -R 0777 /var/www/wordpress/wp-content/
 EXPOSE	9000
 CMD		["php-fpm8.2", "-F"]
