@@ -3,7 +3,6 @@ ARG 	DB_NAME \
    		DB_USER \
     	DB_PASSWORD
 RUN		apk update && \
-		apk upgrade && \
 		apk add --no-cache php8.2 php8.2-fpm php8.2-mysqli php8.2-pdo_mysql php8.2-gd php8.2-xml php8.2-curl php8.2-opcache php8.2-zip curl
 WORKDIR	/var/www
 COPY	./tools/conf-setup.sh .
