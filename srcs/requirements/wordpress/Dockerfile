@@ -4,7 +4,7 @@ ARG 	DB_NAME \
     	DB_PASSWORD
 RUN		apk update && \
 		apk add --no-cache php8 php8-fpm php8-mysqli php8-pdo_mysql php8-gd php8-xml php8-curl php8-opcache php8-zip curl
-COPY	/requirements/wordpress/conf/tools/conf-setup.sh .
+COPY	/requirements/wordpress/tools/conf-setup.sh .
 RUN		chmod +x /conf-setup.sh && /conf-setup.sh && rm /conf-setup.sh
 WORKDIR	/var/www
 RUN		curl -O https://wordpress.org/latest.tar.gz && \
