@@ -14,7 +14,7 @@ services:
       - inception
     restart: on-failure
     volumes:
-      - ./requirements/nginx/tools/cert/*:/etc/nginx/ssl/
+      - ./requirements/nginx/tools/cert:/etc/nginx/ssl/
       - volume-wp:/var/www/
     depends_on:
       - wordpress
