@@ -1,6 +1,5 @@
 FROM	alpine:3.15
 RUN		apk update && \
-    	apk add --no-cache nginx
-COPY	/requirements/nginx/conf/nginx.conf /etc/nginx.nginx.conf	    
+    	apk add --no-cache nginx    
 EXPOSE	443
 CMD		["nginx", "-g", "daemon off;"]
