@@ -38,9 +38,9 @@ RUN openrc\
 	&& touch /run/openrc/softlevel
 
 # Copy initialization script
-COPY ./conf/mariadb-server.cnf	/etc/my.cnf.d/
-COPY ./conf/my.cnf				/etc/
-COPY ./tools/create_database.sh	/
+COPY /requirements/mariadb/conf/mariadb-server.cnf	/etc/my.cnf.d/
+COPY /requirements/mariadb/conf/my.cnf				/etc/
+COPY /requirements/mariadb/tools/create_database.sh	/
 
 # Expose the mariadb port
 EXPOSE 3306
