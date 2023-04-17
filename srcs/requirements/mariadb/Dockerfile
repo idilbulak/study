@@ -43,8 +43,7 @@ RUN		mkdir -p /run/mysqld /var/lib/mysql \
 # this will allows us to commmunicate with the mariadb daemon via another container
 RUN		sed -i 's/skip-networking/#&/' /etc/my.cnf.d/mariadb-server.cnf
 
-COPY		/requirements/mariadb/tools/create_database.sh /usr/local/bin/
-
-ENTRYPOINT	["create_database.sh"]
+COPY		/requirements/mariadb/tools/create_database.sh .
+RUN		chmod +x /create_database.sh && /create_database.sh
 
 CMD		["mysqld_safe"]
