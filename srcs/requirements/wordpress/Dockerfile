@@ -10,7 +10,7 @@ WORKDIR	/var/www
 RUN		curl -O https://wordpress.org/latest.tar.gz && \
     	tar -zxvf latest.tar.gz && rm latest.tar.gz
 COPY	./requirements/wordpress/conf/wp-config.php /var/www/wordpress/
-RUN		chmod -R 0777 /var/www/wordpress/wp-content/
+
 EXPOSE	9000
 CMD		["php-fpm8", "-F"]
 
