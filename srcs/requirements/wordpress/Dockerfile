@@ -9,7 +9,7 @@ RUN		chmod +x /conf-setup.sh && /conf-setup.sh && rm /conf-setup.sh
 WORKDIR	/var/www
 RUN		curl -O https://wordpress.org/latest.tar.gz && \
     	tar -zxvf latest.tar.gz && rm latest.tar.gz
-COPY	./requirements/wordpress/conf/wp-config.php /var/www/wordpress/
+COPY	/requirements/wordpress/conf/wp-config.php /var/www/wordpress/
 
 EXPOSE	9000
 CMD		["php-fpm8", "-F"]
