@@ -1,54 +1,34 @@
-#! /bin/sh
+#!bin/sh
 
+if [ ! -d "/var/lib/mysql/mysql" ]; then
 
-DATADIR=/var/lib/mysql
+        chown -R mysql:mysql /var/lib/mysql
 
+        # init database
+        mysql_install_db --basedir=/usr --datadir=/var/lib/mysql --user=mysql --rpm
 
-# This function set the default options to mariadb database
-secure_database()
-{
-	cat << EOF | mysql_secure_installation
-Y
-n
-Y
-Y
-Y
-Y
-EOF
-}
+        tfile=`mktemp`
+        if [ ! -f "$tfile" ]; then
+                return 1
+        fi
+fi
 
+if [ ! -d "/var/lib/mysql/wordpress" ]; then
 
-# Create the wordpress database
-create_database()
-{
-	cat << EOF | mariadb -u root
-CREATE DATABASE $MYSQL_DATABASE;
-GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO "$MYSQL_USER"@"localhost" IDENTIFIED BY "$MYSQL_PASSWORD";
-GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO "$MYSQL_USER"@"%" IDENTIFIED BY "$MYSQL_PASSWORD";
+        cat << EOF > /tmp/create_db.sql
+USE mysql;
+FLUSH PRIVILEGES;
+DELETE FROM     mysql.user WHERE User='';
+DROP DATABASE test;
+DELETE FROM mysql.db WHERE Db='test';
+DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
+ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_ROOT}';
+CREATE DATABASE ${DB_NAME} CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE USER '${DB_USER}'@'%' IDENTIFIED by '${DB_PASS}';
+GRANT ALL PRIVILEGES ON wordpress.* TO '${DB_USER}'@'%';
 FLUSH PRIVILEGES;
 EOF
-}
-
-
-main()
-{
-	if [ ! -z "$(ls -A $DATADIR)" ];
-	then
-		echo "The database doesn't need to be created."
-		rc-service mariadb start
-		rc-service mariadb stop
-	else
-		echo "Database installation ..."
-		mariadb-install-db --rpm
-		rc-service mariadb start
-		secure_database
-		create_database
-		rc-service mariadb restart
-		rc-service mariadb stop
-		echo "The database installation is completed."
-	fi
-}
-
-
-main
-exec /usr/bin/mysqld --user=mysql --console
+        # run init.sql
+        /usr/bin/mysqld --user=mysql --bootstrap < /tmp/create_db.sql
+        rm -f /tmp/create_db.sql
+fi
