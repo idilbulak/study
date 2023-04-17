@@ -19,29 +19,31 @@
 # USER mysql
 # CMD ["mysqld", "--skip-log-error"]
 
+# syntax=docker/dockerfile:1
+
+# Get the container Image
 FROM alpine:3.15
 
-ARG DB_NAME \
-    DB_USER \
-    DB_PASSWORD
+# Update the index of available packages
+# Upgrade the currently installed packages
+# Install tools required for Mariadb
+RUN apk update && apk upgrade && apk add --no-cache\
+	mariadb\
+	mariadb-client\
+	mariadb-common\
+	openrc
 
-RUN apk update && apk add --no-cache mariadb mariadb-client
+# Launch openrc for rc-service
+RUN openrc\
+	&& touch /run/openrc/softlevel
 
-RUN mkdir /var/run/mysqld; \
-    chmod 777 /var/run/mysqld; \
-    { echo '[mysqld]'; \
-      echo 'skip-host-cache'; \
-      echo 'skip-name-resolve'; \
-      echo 'bind-address=0.0.0.0'; \
-    } | tee  /etc/my.cnf.d/docker.cnf; \
-    sed -i "s|skip-networking|skip-networking=0|g" \
-      /etc/my.cnf.d/mariadb-server.cnf
+# Copy initialization script
+COPY ./conf/mariadb-server.cnf	/etc/my.cnf.d/
+COPY ./conf/my.cnf				/etc/
+COPY ./tools/create_database.sh	/
 
-RUN mysql_install_db --user=mysql --datadir=/var/lib/mysql
-
+# Expose the mariadb port
 EXPOSE 3306
 
-COPY /requirements/mariadb/tools/create_database.sh .
-RUN sh create_database.sh && rm create_database.sh
-USER mysql
-CMD ["/usr/bin/mysqld", "--skip-log-error"]
+# Launch the script
+CMD ["sh", "/create_database.sh"]
