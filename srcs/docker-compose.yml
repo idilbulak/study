@@ -14,7 +14,7 @@ services:
       - inception
     restart: on-failure
     volumes:
-      - volume-wp:/var/www/
+      - volume-wp:/var/www/wordpress
     depends_on:
       - wordpress
 
