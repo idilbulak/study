@@ -1,9 +1,9 @@
 name = inception
 
 all:
-	@mkdir ~/data
-	@mkdir ~/data/mariadb
-	@mkdir ~/data/wordpress
+	@mkdir -p /home/ibulak/data
+	@mkdir -p /home/ibulak/data/mariadb
+	@mkdir -p /home/ibulak/data/wordpress
 	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d --build
 
 re:
