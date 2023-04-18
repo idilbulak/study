@@ -1,11 +1,11 @@
 FROM	alpine:3.15
 RUN		apk update && \
-		apk add --no-cache php8 php8-fpm php8-mysqli mariadb-client curl
+		apk add --no-cache php8 php8-fpm php8-mysqli mariadb-client wget
 WORKDIR	/var/www
-RUN		curl -o https://wordpress.org/latest.tar.gz && \
+RUN		wget https://wordpress.org/latest.tar.gz && \
     	tar -zxvf latest.tar.gz && rm latest.tar.gz
 RUN		chown -R root:root /wordpress
-RUN		curl -o https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+RUN		wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 RUN		chmod +x wp-cli.phar
 RUN		mv wp-cli.phar /usr/local/bin/wp
 COPY	/requirements/wordpress/conf/www.conf	/etc/php/8/fpm/pool.d/www.conf
