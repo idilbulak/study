@@ -7,7 +7,7 @@ RUN		chown -R root:root /var/www/wordpress
 RUN		wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 RUN		chmod +x wp-cli.phar
 RUN		mv wp-cli.phar /usr/local/bin/wp
-COPY	/requirements/wordpress/conf/www.conf	/etc/php/8/fpm/pool.d/www.conf
+COPY	/requirements/wordpress/conf/www.conf	/etc/php7/php-fpm.d/www.conf
 COPY	/requirements/wordpress/tools/conf-setup.sh .
 RUN		chmod +x /conf-setup.sh && /conf-setup.sh && rm /conf-setup.sh
 EXPOSE	9000
