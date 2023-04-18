@@ -4,7 +4,7 @@ RUN		apk update && \
 WORKDIR	/var/www
 RUN		wget https://wordpress.org/latest.tar.gz && \
     	tar -zxvf latest.tar.gz && rm latest.tar.gz
-RUN		chown -R root:root /wordpress
+RUN		chown -R root:root /var/www/wordpress
 RUN		wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 RUN		chmod +x wp-cli.phar
 RUN		mv wp-cli.phar /usr/local/bin/wp
