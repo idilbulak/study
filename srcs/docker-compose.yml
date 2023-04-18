@@ -17,6 +17,8 @@ services:
       - volume-wp:/var/www/wordpress
     depends_on:
       - wordpress
+    env_file:
+      - .env
 
   wordpress:
     container_name: wordpress
