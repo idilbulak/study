@@ -10,7 +10,7 @@ RUN		chmod +x wp-cli.phar
 RUN		mv wp-cli.phar /usr/local/bin/wp
 COPY	/requirements/wordpress/conf/www.conf	/etc/php/8/fpm/pool.d/www.conf
 COPY	/requirements/wordpress/tools/conf-setup.sh .
-RUN		chmod +x /conf-setup.sh && /conf-setup.sh && rm -f /conf-setup.sh
+RUN		chmod +x /var/www/conf-setup.sh && /var/www/conf-setup.sh && rm -f /var/www/conf-setup.sh
 EXPOSE	9000
 CMD		["php-fpm8", "-F"]
 
