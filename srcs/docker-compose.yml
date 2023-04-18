@@ -24,17 +24,17 @@ services:
     build:
       context: .
       dockerfile: ./requirements/wordpress/Dockerfile
-      args:
-        DB_NAME: ${DB_NAME}
-        DB_USER: ${DB_USER}
-        DB_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "9000"
     networks:
       - inception
     restart: on-failure
     volumes:
-      - volume-wp:/var/www/
+      - volume-wp:/var/www/wordpress
     depends_on:
       - mariadb
+    env_file:
+      - .env
 
   mariadb:
     container_name: mariadb
@@ -42,18 +42,15 @@ services:
     build:
       context: .
       dockerfile: ./requirements/mariadb/Dockerfile
-      args:
-        DB_NAME: ${DB_NAME}
-        DB_USER: ${DB_USER}
-        DB_PASSWORD: ${DB_PASSWORD}
-        DB_ROOT: ${DB_ROOT}
     ports:
-      - "3306:3306"
+      - "3306"
     networks:
       - inception
     restart: on-failure
     volumes:
       - volume-db:/var/lib/mysql
+    env_file:
+      - .env
 
 volumes:
   volume-wp:
