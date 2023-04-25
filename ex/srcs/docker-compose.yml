@@ -51,10 +51,10 @@ volumes:
     driver_opts:
       type: "none"
       o: "bind"
-      device: "~/data/db_data"
+      device: "home/ibulak/data/db_data"
   
   wordpress_data:
     driver_opts:
       type: "none"
       o: "bind"
-      device: "~/data/wordpress_data"
+      device: "home/ibulak/data/wordpress_data"
