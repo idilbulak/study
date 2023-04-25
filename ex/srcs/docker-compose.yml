@@ -5,9 +5,6 @@ services:
     restart: always
     depends_on:
       - wordpress
-      - adminer
-      - badge42
-      - simple-portfolio
     build:
       context: requirements/nginx
     volumes:
@@ -22,7 +19,6 @@ services:
     restart: always
     depends_on:
       - mariadb
-      - redis
     build:
       context: requirements/wordpress
     volumes:
