@@ -1,0 +1,72 @@
+version: '3'
+
+services:
+
+  nginx:
+    container_name: nginx
+    image: nginx                     
+    build:
+      context: .
+      dockerfile: ./requirements/nginx/Dockerfile
+    ports:
+      - "443:443"
+    networks:
+      - inception
+    restart: on-failure
+    volumes:
+      - volume-wp:/var/www/wordpress
+    depends_on:
+      - wordpress
+    env_file:
+      - .env
+
+  wordpress:
+    container_name: wordpress
+    image: wordpress
+    build:
+      context: .
+      dockerfile: ./requirements/wordpress/Dockerfile
+    ports:
+      - "9000"
+    networks:
+      - inception
+    restart: on-failure
+    volumes:
+      - volume-wp:/var/www/wordpress
+    depends_on:
+      - mariadb
+    env_file:
+      - .env
+
+  mariadb:
+    container_name: mariadb
+    image: mariadb
+    build:
+      context: .
+      dockerfile: ./requirements/mariadb/Dockerfile
+    ports:
+      - "3306"
+    networks:
+      - inception
+    restart: on-failure
+    volumes:
+      - volume-db:/var/lib/mysql
+    env_file:
+      - .env
+
+volumes:
+  volume-wp:
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/ibulak/data/wordpress
+
+  volume-db:
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/ibulak/data/mariadb
+
+networks:
+    inception:
+        driver: bridge

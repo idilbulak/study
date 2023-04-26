@@ -1,0 +1,38 @@
+version: '3.9'
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: ./nginx/Dockerfile            
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./wordpress:/var/www/html
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: wp
+      MYSQL_USER: wp
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
+  php:
+    image: php
+    build:
+      context: .
+      dockerfile: ./php/Dockerfile
+    volumes:
+      - ./wordpress:/var/www/html
+
+volumes:
+  wordpress:
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/ibulak/data/wordpress
+
+    # volumes:
+    #   - volume-wp:/var/www/wordpress
+    # env_file:
+    #   - .env
